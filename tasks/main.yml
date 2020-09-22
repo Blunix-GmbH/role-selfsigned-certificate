@@ -1,0 +1,33 @@
+- name: install python3-openssl
+  apt:
+    name: python3-openssl
+    state: present
+
+- name: create self signed certificate directory
+  file:
+    state: directory
+    path: "{{ selfsigned_certificate_dir }}/"
+
+- name: generate self signed certificate key
+  openssl_privatekey:
+    path: "{{ selfsigned_certificate_dir }}/{{ selfsigned_certificate_privkey_name }}"
+
+- name: generate self signed certificate csr
+  openssl_csr:
+    path: "{{ selfsigned_certificate_dir }}/{{ selfsigned_certificate_csr_name }}"
+    privatekey_path: "{{ selfsigned_certificate_dir }}/{{ selfsigned_certificate_privkey_name }}"
+    common_name: "{{ selfsigned_certificate_common_name }}"
+    subject_alt_name: "{{ selfsigned_certificate_subject_alt_name }}"
+
+- name: generate self signed certificate cert
+  openssl_certificate:
+    path: "{{ selfsigned_certificate_dir }}/{{ selfsigned_certificate_cert_name }}"
+    privatekey_path: "{{ selfsigned_certificate_dir }}/{{ selfsigned_certificate_privkey_name }}"
+    csr_path: "{{ selfsigned_certificate_dir }}/{{ selfsigned_certificate_csr_name }}"
+    provider: selfsigned
+
+- name: generate dhparam
+  openssl_dhparam:
+    path: "{{ selfsigned_certificate_dhparam_path }}"
+    size: "{{ selfsigned_certificate_dhparam_size }}"
+

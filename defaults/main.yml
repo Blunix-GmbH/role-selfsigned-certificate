@@ -1,0 +1,15 @@
+selfsigned_certificate_dhparam_size: "1024"
+selfsigned_certificate_dhparam_path: "/etc/letsencrypt/live/{{ inventory_hostname }}-dh{{ selfsigned_certificate_dhparam_size }}.pem"
+
+selfsigned_certificate_dir: "/etc/letsencrypt/live/{{ inventory_hostname }}"
+selfsigned_certificate_privkey_name: "privkey.pem"
+selfsigned_certificate_csr_name: "cert.csr"
+selfsigned_certificate_cert_name: "fullchain.pem"
+
+selfsigned_certificate_common_name: "{{ inventory_hostname }}"
+# multiple have to be comma seperated, example:
+# DNS:www.ansible.com,DNS:m.ansible.com
+selfsigned_certificate_subject_alt_name: "DNS:{{ inventory_hostname_short }}"
+
+selfsigned_certificate_privkey_path: "{{ selfsigned_certificate_dir }}/{{ selfsigned_certificate_privkey_name }}"
+selfsigned_certificate_cert_path: "{{ selfsigned_certificate_dir }}/{{ selfsigned_certificate_cert_name }}"
